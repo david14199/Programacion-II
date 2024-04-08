@@ -41,3 +41,5 @@ class Personas:
         user.remove(elim)
         
         return f'el dato eliminado es',elim,'La lista actual es',user
+    def  actualizar():
+        print('HAZ SELECCIONADO LA FUNCIONALIDAD ACTUALIZAR')
