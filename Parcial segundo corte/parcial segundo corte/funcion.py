@@ -192,13 +192,13 @@ class SubMenu:
                             self.lista5[indice5] = nuevo_elemento5
                             print("Elemento actualizado con éxito.")
                         else:       
-                            print("El indice esta fuera de rango o ha decidino no actualizar")
+                            print("El indice esta fuera de rango o ha decidido no actualizar")
                     else:       
-                        print("El indice esta fuera de rango o ha decidino no actualizar")
+                        print("El indice esta fuera de rango o ha decidido no actualizar")
                 else:       
-                    print("El indice esta fuera de rango o ha decidino no actualizar")
+                    print("El indice esta fuera de rango o ha decidido no actualizar")
             else:       
-                print("El indice esta fuera de rango o ha decidino no actualizar")
+                print("El indice esta fuera de rango o ha decidido no actualizar")
             
         else:
             print("La lista está vacía. No hay elementos para actualizar.")
