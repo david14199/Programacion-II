@@ -99,7 +99,7 @@ variable = IntVar()
 
 opcion1 = Radiobutton(ap, text="Hombre", variable=variable, value=1, command="")
 opcion2 = Radiobutton(ap, text="Mujer", variable=variable, value=2, command="")
-opcion3 = Radiobutton(ap, text="39 Tipos de gay", variable=variable, value=3, command="")
+opcion3 = Radiobutton(ap, text="Helicoptero apache de combate", variable=variable, value=3, command="")
 #posicionar radio button
 opcion1.place(x=200,y=490)
 opcion2.place(x=200,y=510)
