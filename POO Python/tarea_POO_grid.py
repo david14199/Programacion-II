@@ -4,7 +4,7 @@ ap=Tk()
 
 ap.geometry("600x600")
 
-ap.configure(bg="aqua")
+ap.configure(bg="black")
 ap.title("FORMULARIO")
 def funcion():
     
@@ -22,7 +22,7 @@ def funcion():
     seleccionados = ciudad.curselection()
     for index in seleccionados:
         elemento = ciudad.get(index)
-      
+        
    
        
     #obtenemos las opciones selecionadas de los radio button
@@ -35,9 +35,9 @@ def funcion():
     elif seleccion == 3:
         seta="Helicoptero Apache de Combate"
     try:
-        messagebox.showinfo(message=f"Nombre:{n}\nApellido:{a}\nEdad:{e}\nDirrecion:{d}\ntelefono:{t}\nCiudad:{elemento}\nSexo:{seta}", title="Sus datos son")
+        messagebox.showinfo("DATOS REGISTRADOS",message=f"Nombre:{n}\nApellido:{a}\nEdad:{e}\nDirrecion:{d}\ntelefono:{t}\nCiudad:{elemento}\nSexo:{seta}", title="Sus datos son")
     except:
-        messagebox.showinfo(message="a")
+        messagebox.showinfo(message="ERROR NO SE PUDO MOSTRAR SUS DATOS")
     nombre.delete(0, END)
     apellido.delete(0, END)   
     dirrecion.delete(0, END)     
@@ -60,16 +60,22 @@ tel=Label(ap,text="Telefono",bg="black",fg="white")
 se=Label(ap,text="Genero",bg="black", fg="white", font=("Arial", 16), width=5, height=0, anchor="center")
 ciu=Label(ap,text="Ciudad",bg="black", fg="white", font=("Arial", 16), width=5, height=0, anchor="center")
 ed=Label(ap,text="Edad",bg="black",fg="white")
-
 #posicionar label
-titulo.place(x=200,y=120)
-nom.place(x=200,y=200)
-apell.place(x=200,y=230)
-dir.place(x=200,y=260)
-tel.place(x=200,y=290)
-ed.place(x=200,y=320)
-se.place(x=250,y=460)
-ciu.place(x=250,y=350)
+titulo.grid(column=0,row=1,padx=200,pady=50, ipadx=0,sticky=W)
+
+nom.grid(column=0,row=2,padx=200, pady=0,sticky=W,ipadx=3)
+
+apell.grid(column=0,row=3,padx=200, pady=5,sticky=W,ipadx=3)
+
+dir.grid(column=0,row=4,padx=200, pady=0,sticky=W,ipadx=1)
+
+tel.grid(column=0,row=5,padx=200, pady=5,sticky=W,ipadx=2)
+
+ed.grid(column=0,row=6,padx=200, pady=0,sticky=W,ipadx=12)
+
+ciu.grid(column=0,row=7,padx=255, pady=0,sticky=W,ipadx=0)
+
+se.grid(column=0,row=9,padx=255, pady=5,sticky=W,ipadx=0)
 
 #Entry nombre, apellido, edad, direccion, telefono
 nombre=Entry(ap)
@@ -77,19 +83,19 @@ apellido=Entry(ap)
 dirrecion=Entry(ap)
 telefono=Entry(ap)
 edad=Entry(ap)
-
 #posicionar entry
-nombre.place(x=255,y=200)
-apellido.place(x=255,y=230)
-dirrecion.place(x=255,y=260)
-telefono.place(x=255,y=290)
-edad.place(x=255,y=320)
+nombre.grid(column=0,row=2,padx=256,sticky=W,)
+apellido.grid(column=0,row=3,padx=255, pady=0,sticky=W)
+dirrecion.grid(column=0,row=4,padx=255, pady=0,sticky=W)
+telefono.grid(column=0,row=5,padx=255, pady=0,sticky=W)
+edad.grid(column=0,row=6,padx=255, pady=0,sticky=W,ipadx=0)
 
 #crear listbox
+
 ciudad=Listbox(ap, width=30,height=5, selectmode="single")
 
 #posicionar listbox
-ciudad.place(x=200,y=380)
+ciudad.grid(column=0,row=8,padx=200, pady=0,sticky=W,ipadx=0)
 #se insertan las opciones a la listbox
 ciudades= ["Cartagena", "Sincelejo", "Turbaco", "Arjona"]
 for ciudade in ciudades:
@@ -97,20 +103,20 @@ for ciudade in ciudades:
 
 
 #crear radio button
+
 variable = IntVar()
 
 
-opcion1 = Radiobutton(ap, text="Hombre", variable=variable, value=1, command="",bg="aqua",fg="black")
-opcion2 = Radiobutton(ap, text="Mujer", variable=variable, value=2, command="",bg="aqua",fg="black")
-opcion3 = Radiobutton(ap, text="Helicoptero apache de combate", variable=variable, value=3, command="",bg="aqua",fg="black")
+opcion1 = Radiobutton(ap, text="Hombre", variable=variable, value=1, command="",bg="black",fg="white")
+opcion2 = Radiobutton(ap, text="Mujer", variable=variable, value=2, command="",bg="black",fg="white")
+opcion3 = Radiobutton(ap, text="Helicoptero apache de combate", variable=variable, value=3, command="",bg="black",fg="white")
 #posicionar radio button
-opcion1.place(x=200,y=490)
-opcion2.place(x=200,y=510)
-opcion3.place(x=200,y=530)
-
+opcion1.grid(column=0,row=10,padx=200, pady=0,sticky=W,ipadx=0)
+opcion2.grid(column=0,row=11,padx=200, pady=0,sticky=W,ipadx=0)
+opcion3.grid(column=0,row=12,padx=200, pady=0,sticky=W,ipadx=0)
 #creamos un botton
 p=Button(ap,text="Mostrar",command=funcion)
 
 #Posicionamos el boton
-p.place(x=200,y=560)
+p.grid(column=0,row=13,padx=300, pady=5,sticky=W,ipadx=0)
 mainloop()
