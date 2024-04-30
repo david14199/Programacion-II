@@ -6,18 +6,24 @@ ap.geometry("600x600")
 
 
 def funcion():
+    
     #obtenemos nombre, apellido, edad, direccion, telefono
+
+    
     n=nombre.get()
     a=apellido.get()
     e=edad.get()
     d=dirrecion.get()
     t=telefono.get()
-
+    
     #obtener la selecion de la listbox
+    
     seleccionados = ciudad.curselection()
     for index in seleccionados:
         elemento = ciudad.get(index)
         print("Elemento seleccionado:", elemento)
+   
+       
     #obtenemos las opciones selecionadas de los radio button
     seleccion = variable.get()
     if seleccion == 1:
@@ -27,10 +33,23 @@ def funcion():
         seta="Mujer"
     elif seleccion == 3:
         seta="Helicoptero Apache de Combate"
+    try:
+        messagebox.showinfo(message=f"Nombre:{n}\nApellido:{a}\nEdad:{e}\nDirrecion:{d}\ntelefono:{t}\nCiudad:{elemento}\nSexo:{seta}", title="Sus datos son")
+    except:
+        messagebox.showinfo(message="a")
+    nombre.delete(0, END)
+    apellido.delete(0, END)   
+    dirrecion.delete(0, END)     
+    telefono.delete(0, END) 
+    edad.delete(0, END) 
+    variable.set(-1)
+    # Obtener todos los índices de elementos seleccionados
+   
 
-    messagebox.showinfo(message=f"Nombre:{n}\nApellido:{a}\nEdad:{e}\nDirrecion:{d}\ntelefono:{t}\nCiudad:{elemento}\nSexo:{seta}", title="Sus datos son")
-
-
+    # Deseleccionar todos los elementos seleccionados
+    for index in seleccionados:
+        ciudad.selection_clear(index)
+    
 #label nombre, apellido, edad, direccion, telefono
 titulo=Label(ap,text="FORMULARIO",bg="yellow", fg="blue", font=("Arial", 16), width=20, height=2, anchor="center")
 nom=Label(ap,text="Nombre")
@@ -62,6 +81,7 @@ dirrecion.place(x=255,y=260)
 telefono.place(x=255,y=290)
 edad.place(x=255,y=320)
 #crear listbox
+
 ciudad=Listbox(ap, width=30,height=5, selectmode="single")
 
 #posicionar listbox
@@ -73,10 +93,13 @@ for ciudade in ciudades:
 
 
 #crear radio button
+
 variable = IntVar()
+
+
 opcion1 = Radiobutton(ap, text="Hombre", variable=variable, value=1, command="")
 opcion2 = Radiobutton(ap, text="Mujer", variable=variable, value=2, command="")
-opcion3 = Radiobutton(ap, text="Helicoptero Apache de Combate", variable=variable, value=3, command="")
+opcion3 = Radiobutton(ap, text="39 Tipos de gay", variable=variable, value=3, command="")
 #posicionar radio button
 opcion1.place(x=200,y=490)
 opcion2.place(x=200,y=510)
