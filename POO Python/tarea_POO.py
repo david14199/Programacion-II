@@ -4,7 +4,7 @@ ap=Tk()
 
 ap.geometry("600x600")
 
-
+ap.configure(bg="aqua")
 def funcion():
     
     #obtenemos nombre, apellido, edad, direccion, telefono
@@ -51,14 +51,15 @@ def funcion():
         ciudad.selection_clear(index)
     
 #label nombre, apellido, edad, direccion, telefono
-titulo=Label(ap,text="FORMULARIO",bg="yellow", fg="blue", font=("Arial", 16), width=20, height=2, anchor="center")
-nom=Label(ap,text="Nombre")
-apell=Label(ap,text="Apellido")
-dir=Label(ap,text="Dirrecion")
-tel=Label(ap,text="Telefono")
-se=Label(ap,text="Genero",bg="yellow", fg="blue", font=("Arial", 16), width=5, height=0, anchor="center")
-ciu=Label(ap,text="Ciudad",bg="yellow", fg="blue", font=("Arial", 16), width=5, height=0, anchor="center")
-ed=Label(ap,text="Edad")
+titulo=Label(ap,text="FORMULARIO",bg="black", fg="white", font=("Arial", 16), width=20, height=2, anchor="center")
+nom=Label(ap,text="Nombre",bg="black",fg="white")
+apell=Label(ap,text="Apellido",bg="black",fg="white")
+dir=Label(ap,text="Dirrecion",bg="black",fg="white")
+tel=Label(ap,text="Telefono",bg="black",fg="white")
+se=Label(ap,text="Genero",bg="black", fg="white", font=("Arial", 16), width=5, height=0, anchor="center")
+ciu=Label(ap,text="Ciudad",bg="black", fg="white", font=("Arial", 16), width=5, height=0, anchor="center")
+ed=Label(ap,text="Edad",bg="black",fg="white")
+
 #posicionar label
 titulo.place(x=200,y=120)
 nom.place(x=200,y=200)
@@ -68,20 +69,22 @@ tel.place(x=200,y=290)
 ed.place(x=200,y=320)
 se.place(x=250,y=460)
 ciu.place(x=250,y=350)
+
 #Entry nombre, apellido, edad, direccion, telefono
 nombre=Entry(ap)
 apellido=Entry(ap)
 dirrecion=Entry(ap)
 telefono=Entry(ap)
 edad=Entry(ap)
+
 #posicionar entry
 nombre.place(x=255,y=200)
 apellido.place(x=255,y=230)
 dirrecion.place(x=255,y=260)
 telefono.place(x=255,y=290)
 edad.place(x=255,y=320)
-#crear listbox
 
+#crear listbox
 ciudad=Listbox(ap, width=30,height=5, selectmode="single")
 
 #posicionar listbox
@@ -93,13 +96,12 @@ for ciudade in ciudades:
 
 
 #crear radio button
-
 variable = IntVar()
 
 
-opcion1 = Radiobutton(ap, text="Hombre", variable=variable, value=1, command="")
-opcion2 = Radiobutton(ap, text="Mujer", variable=variable, value=2, command="")
-opcion3 = Radiobutton(ap, text="Helicoptero apache de combate", variable=variable, value=3, command="")
+opcion1 = Radiobutton(ap, text="Hombre", variable=variable, value=1, command="",bg="aqua",fg="black")
+opcion2 = Radiobutton(ap, text="Mujer", variable=variable, value=2, command="",bg="aqua",fg="black")
+opcion3 = Radiobutton(ap, text="Helicoptero apache de combate", variable=variable, value=3, command="",bg="aqua",fg="black")
 #posicionar radio button
 opcion1.place(x=200,y=490)
 opcion2.place(x=200,y=510)
