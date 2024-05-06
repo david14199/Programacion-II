@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import messagebox
 import util.generic as utl
 def inicio():
+    user.delete(0, END)
+    cla.delete(0, END)
     messagebox.showinfo("VENTANA", message="Estamos trabajando...")
 
 
