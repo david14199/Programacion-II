@@ -1,15 +1,24 @@
 from tkinter import * 
+from tkinter import messagebox
 import util.generic as utl
+def inicio():
+    messagebox.showinfo("VENTANA", message="Estamos trabajando...")
+
 
 main=Tk()
-
-main.geometry("800x800")
+main.title("SPLAVIA")
+main.geometry("800x150")
+main.resizable(False,False)
 #
-logo = utl.leer_imagen("imagenes/images.jpg", (225, 225))
+icono = utl.leer_imagen("imagenes/images.jpg",(20,20))
+
+main.iconphoto(True,icono)
+#
+
+logo = utl.leer_imagen("imagenes/logo.png", (600, 115))
 frame_logo = Frame(main, bd=0, width=300,relief=SOLID, padx=10, pady=10, bg="#F4F5F7")
 frame_logo.pack(side=LEFT, expand=YES, fill=BOTH)
 #
-frame1=Frame(main)
 #
 frame2=Frame(main)
 #
@@ -26,12 +35,13 @@ cla=Entry(frame2)
 cla.pack()
 
 #
-imagen1=Label(frame1,image=logo)
+imagen1=Label(frame_logo,image=logo)
 imagen1.pack()
 #
-frame1.pack(side="left")
+
 frame2.pack(side="right")
+frame_logo.pack(side="left")
 
-
-
+hola=Button(frame2,text="inicio de sesion",command=inicio)
+hola.pack()
 mainloop()
