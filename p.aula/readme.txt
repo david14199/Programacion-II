@@ -1,4 +1,4 @@
-
+Requisitos
 1. Debe tener instalado python en el computador para instalarlo puede visitar esta pagina: 
 https://www.python.org/
 
