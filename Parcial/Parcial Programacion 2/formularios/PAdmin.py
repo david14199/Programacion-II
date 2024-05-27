@@ -35,7 +35,7 @@ class PAdmin(tk.Tk):
         menubar.add_cascade(label="Categorias", menu=menucategorias)   
 
         menuproducto = tk.Menu(menubar, tearoff=0)
-        menuproducto.add_command(label="Administracion de Productos")    
+        menuproducto.add_command(label="Administracion de Productos",command=self.main_productos)    
         menubar.add_cascade(label="Productos", menu=menuproducto)
 
         menuventas = tk.Menu(menubar, tearoff=0)
@@ -77,6 +77,9 @@ class PAdmin(tk.Tk):
     def main_usuarios(self):
         self.formulario_usuario()
         self.listar_usuarios()
+    def main_productos(self):
+        self.formulario_producto()
+        self.listar_productos()
     
     def formulario_usuario(self):
         self.limpiar_panel(self.frame_dinamyc)
@@ -117,6 +120,31 @@ class PAdmin(tk.Tk):
 
         btnguardar = tk.Button(self.frame_dinamyc, text="\uf0c7 GUARDAR", font=('Times',14), command=self.save_user)
         btnguardar.place(x=870, y=130)
+
+    def formulario_producto(self):
+        self.limpiar_panel(self.frame_dinamyc)
+        labelform = tk.Label(self.frame_dinamyc,text="\uf0c9 REGISTRO DE PRODUCTOS", font=('Times',16),fg="#9fa8da")
+        labelform.place(x=70, y=30)
+        
+        labelcedula = tk.Label(self.frame_dinamyc,text="Id del Producto:", font=('Times',14))
+        labelcedula.place(x=70, y=100)
+        self.ccedula = tk.Entry(self.frame_dinamyc, width=40)
+        self.ccedula.place(x=245, y=100)
+
+        labelnombre = tk.Label(self.frame_dinamyc,text="Nombre del Producto:", font=('Times',14))
+        labelnombre.place(x=70, y=130)
+        self.cnombre = tk.Entry(self.frame_dinamyc, width=40)
+        self.cnombre.place(x=245, y=130)
+
+        labelusuario = tk.Label(self.frame_dinamyc,text="Precio del Producto:", font=('Times',14))
+        labelusuario.place(x=70,y=160)
+        self.cusuario = tk.Entry(self.frame_dinamyc, width=40)
+        self.cusuario.place(x=245,y=160)
+        btnguardar = tk.Button(self.frame_dinamyc, text="\uf0c7 GUARDAR", font=('Times',14), command=self.save_producto)
+        btnguardar.place(x=870, y=130)
+        #btneliminar = tk.Button(self.frame_dinamyc, text="\uf0c7 ELIMINAR", font=('Times',14), command=self.delete_producto)
+        #btneliminar.place(x=870, y=180)
+    
     
     def listar_usuarios(self):
         tk.Label(self.frame_dinamyc,text="\uf00b LISTADO DE USUARIOS", font=('Times',16),fg="#9fa8da").place(x=70, y=200)
@@ -134,6 +162,22 @@ class PAdmin(tk.Tk):
         btneliminar = tk.Button(self.frame_dinamyc, text="\uf0c7 Eliminar", font=('Times',14), command=self.delete_user)
         btneliminar.place(x=70, y=520)
         btnupdate = tk.Button(self.frame_dinamyc, text="\uf0c7 Actualizar", font=('Times',14), command=self.update_user)
+        btnupdate.place(x=200, y=520)
+
+    def listar_productos(self):
+        tk.Label(self.frame_dinamyc,text="\uf00b LISTADO DE PRODUCTOS", font=('Times',16),fg="#9fa8da").place(x=70, y=200)
+        self.tablausuarios = ttk.Treeview(self.frame_dinamyc, columns=("Nombre del producto", "Precio"))
+        self.tablausuarios.heading("#0", text="ID del producto")
+        self.tablausuarios.heading("Nombre del producto", text="Nombre del producto")
+        self.tablausuarios.heading("Precio", text="Precio del producto")
+        with open("db_users.json", "r", encoding='utf-8') as self.file:
+                self.db_users = json.load(self.file)
+                for usuarios in self.db_users["productos"]:
+                    self.tablausuarios.insert("", "end", text=f'{usuarios["id"]}',values=(f'{usuarios["name"]}',f'{usuarios["precio"]}'))
+        self.tablausuarios.place(x=70, y=250)
+        btneliminar = tk.Button(self.frame_dinamyc, text="\uf0c7 Eliminar", font=('Times',14), command=self.delete_producto)
+        btneliminar.place(x=70, y=520)
+        btnupdate = tk.Button(self.frame_dinamyc, text="\uf0c7 Actualizar", font=('Times',14), command=self.update_producto)
         btnupdate.place(x=200, y=520)
 
     def save_user(self):
@@ -174,6 +218,37 @@ class PAdmin(tk.Tk):
                                 json.dump(self.db_users, jf, indent=4, ensure_ascii=True)
                                 messagebox.showinfo('Info',"Usuario registrado con exito",parent=self)
                                 self.limpiar_panel(self.frame_dinamyc) 
+    def save_producto(self):
+        if self.ccedula.get() =="" or self.cnombre.get() == "" or self.cusuario.get() == "":
+            messagebox.showinfo('Info',"Debe llenar todos los campos",parent=self)
+            return 
+        else:
+                with open("db_users.json", "r", encoding='utf-8') as self.file:
+                        self.db_users = json.load(self.file)
+
+                        if self.tipo_action1 == "Actualizar1":
+                             for usuarios in self.db_users["productos"]:
+                                if usuarios["id"] == self.tablausuarios.item(self.tablausuarios.selection())["text"]:
+                                    usuarios["name"] = self.cnombre.get()
+                                    usuarios["precio"] = self.cusuario.get()
+                                    with open('db_users.json', 'w') as jf: 
+                                        json.dump(self.db_users, jf, indent=4, ensure_ascii=True)
+                                        messagebox.showinfo('Info',"Producto actualizado  con exito",parent=self)
+                                        #self.listar_usuarios()
+                                        self.limpiar_panel(self.frame_dinamyc)
+                    
+                        else:
+                            self.db_users["productos"].append({
+                                            'id': self.ccedula.get(),
+                                            'name': self.cnombre.get(),
+                                            'precio': self.cusuario.get()
+                                            })
+                            with open('db_users.json', 'w') as jf: 
+                                json.dump(self.db_users, jf, indent=4, ensure_ascii=True)
+                                messagebox.showinfo('Info',"Usuario registrado con exito",parent=self)
+                                self.limpiar_panel(self.frame_dinamyc) 
+
+                            
 
 
     def delete_user(self):
@@ -187,7 +262,17 @@ class PAdmin(tk.Tk):
                             messagebox.showinfo('Info',"Usuario eliminado con exito",parent=self)
                             self.limpiar_panel(self.frame_dinamyc)
                             break
-
+    def delete_producto(self):
+        with open("db_users.json", "r", encoding='utf-8') as self.file:
+                self.db_users = json.load(self.file)
+                for usuarios in self.db_users["productos"]:
+                    if usuarios["id"] == self.tablausuarios.item(self.tablausuarios.selection())["text"]:
+                        self.db_users["productos"].remove(usuarios)
+                        with open('db_users.json', 'w') as jf:
+                            json.dump(self.db_users, jf, indent=4, ensure_ascii=True)
+                            messagebox.showinfo('Info',"Usuario eliminado con exito",parent=self)
+                            self.limpiar_panel(self.frame_dinamyc)
+                            break                        
 
 
     def update_user(self):
@@ -207,6 +292,18 @@ class PAdmin(tk.Tk):
                         self.ccorreo.delete(0, tk.END)
                         self.ccorreo.insert(0,usuarios["email"])
                         self.tipo_action = "Actualizar"
+    def update_producto(self):
+        with open("db_users.json", "r", encoding='utf-8') as self.file:
+                self.db_users = json.load(self.file)
+                for usuarios in self.db_users["productos"]:
+                    if usuarios["id"] == self.tablausuarios.item(self.tablausuarios.selection())["text"]:
+                        self.ccedula.delete(0, tk.END)
+                        self.ccedula.insert(0, usuarios["id"])
+                        self.cnombre.delete(0, tk.END)
+                        self.cnombre.insert(0,usuarios["name"])
+                        self.cusuario.delete(0, tk.END)
+                        self.cusuario.insert(0,usuarios["precio"])
+                        self.tipo_action1 = "Actualizar1"
 
     def limpiar_panel(self,panel):
     # Función para limpiar el contenido del panel

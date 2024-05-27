@@ -4,7 +4,13 @@ from tkinter import messagebox, ttk
 import webbrowser
 import util.generic as utl
 from PIL import Image, ImageTk
+import os
 class PVentas(tk.Tk):
+    archivo_productos = r"productosdb/productos.json"
+    id_produ=[]
+    nombre_produ=[]
+    precio_produ=[]
+
     def __init__(self, name="", username="", email=""):
         self.name = name
         self.username = username
@@ -38,7 +44,9 @@ class PVentas(tk.Tk):
         menuventas = tk.Menu(menubar, tearoff=0)
         menuventas.add_command(label="Administracion de Ventas")  
         menubar.add_cascade(label="Ventas", menu=menuventas)
-
+        menucompras = tk.Menu(menubar, tearoff=0)
+        menucompras.add_command(label="Comprar",command=self.listar_usuarios)  
+        menubar.add_cascade(label="Comprar Producto", menu=menucompras)
         self.config(menu=menubar)
 
         # frame user_info
@@ -68,11 +76,28 @@ class PVentas(tk.Tk):
         #frame_dinamyc
         self.frame_dinamyc = tk.Frame(self.frame_data, bd=0,relief=tk.SOLID, width=f"{self.ancho_pantalla-200}")
         self.frame_dinamyc.pack(side=tk.RIGHT, padx=4, pady=5, fill="both", expand=1)
-
+    
     def main_usuarios(self):
         self.formulario_usuario()
         self.listar_usuarios()
-    
+    def formulario_venta(self):
+        self.limpiar_panel(self.frame_dinamyc)
+        titulo=tk.Label(self.frame_dinamyc,text="\uf0c9 Comprar", font=('Times',16),fg="#9fa8da")  
+        titulo.place(x=70, y=30)
+        productos1=tk.Listbox(self.frame_dinamyc)
+        productos1.place(x=70, y=100)
+        actualizar=tk.Button(self.frame_dinamyc,text="Actualizar",command=self.actualizar_listbox)
+        actualizar.place(x=300,y=100)
+        
+        #
+   
+    #
+    def actualizar_listbox(self):
+        self.productos1.delete(0, tk.END)
+        for producto, inventario in self.productos.items():
+            display_text = f"Producto: {producto}, Inventario: {inventario}"
+            self.productos1.insert(tk.END, display_text)
+    #        
     def formulario_usuario(self):
         self.limpiar_panel(self.frame_dinamyc)
         labelform = tk.Label(self.frame_dinamyc,text="\uf0c9 REGISTRO DE USUARIOS", font=('Times',16),fg="#9fa8da")
@@ -92,7 +117,6 @@ class PVentas(tk.Tk):
         labelusuario.place(x=70,y=160)
         self.cusuario = tk.Entry(self.frame_dinamyc, width=40)
         self.cusuario.place(x=220,y=160)
-
         labelclave = tk.Label(self.frame_dinamyc,text="Contraseña:", font=('Times',14))
         labelclave.place(x=500,y=100)
         self.cclave = tk.Entry(self.frame_dinamyc, width=40, show="*")
@@ -114,22 +138,26 @@ class PVentas(tk.Tk):
         btnguardar.place(x=870, y=130)
     
     def listar_usuarios(self):
-        tk.Label(self.frame_dinamyc,text="\uf00b LISTADO DE USUARIOS", font=('Times',16),fg="#9fa8da").place(x=70, y=200)
-        self.tablausuarios = ttk.Treeview(self.frame_dinamyc, columns=("NombreCompleto", "Username", "Email", "Rol"))
-        self.tablausuarios.heading("#0", text="Cedula")
-        self.tablausuarios.heading("NombreCompleto", text="Nombre Completo")
-        self.tablausuarios.heading("Username", text="Usuario")
-        self.tablausuarios.heading("Email", text="Email")
-        self.tablausuarios.heading("Rol", text="Rol")
+        tk.Label(self.frame_dinamyc,text="\uf00b LISTADO DE PRODUCTOS", font=('Times',16),fg="#9fa8da").place(x=70, y=200)
+        self.tablausuarios = ttk.Treeview(self.frame_dinamyc, columns=("Nombre del producto", "Precio"))
+        self.tablausuarios.heading("#0", text="ID del producto")
+        self.tablausuarios.heading("Nombre del producto", text="Nombre del producto")
+        self.tablausuarios.heading("Precio", text="Precio del producto")
+
         with open("db_users.json", "r", encoding='utf-8') as self.file:
                 self.db_users = json.load(self.file)
-                for usuarios in self.db_users["users"]:
-                    self.tablausuarios.insert("", "end", text=f'{usuarios["id"]}',values=(f'{usuarios["name"]}',f'{usuarios["username"]}',f'{usuarios["email"]}', f'{usuarios["role"]}'))
+                for usuarios in self.db_users["productos"]:
+                    self.tablausuarios.insert("", "end", text=f'{usuarios["id"]}',values=(f'{usuarios["name"]}',f'{usuarios["precio"]}'))
         self.tablausuarios.place(x=70, y=250)
-        btneliminar = tk.Button(self.frame_dinamyc, text="\uf0c7 Eliminar", font=('Times',14), command=self.delete_user)
+        num= tk.Spinbox(self.frame_dinamyc, from_=1, to=99)
+        num.place(x=200,y=500)
+        self.numc = int(num.get())
+        btneliminar = tk.Button(self.frame_dinamyc, text="\uf0c7 Agregar al Carrito", font=('Times',14), command=self.agregar_carrito)
         btneliminar.place(x=70, y=520)
-        btnupdate = tk.Button(self.frame_dinamyc, text="\uf0c7 Actualizar", font=('Times',14), command=self.update_user)
-        btnupdate.place(x=200, y=520)
+        btnupdate = tk.Button(self.frame_dinamyc, text="\uf0c7 Comprar", font=('Times',14), command=self.calcular(self.numc))
+        btnupdate.place(x=250, y=520)
+       
+       
 
     def save_user(self):
         for index in self.listatipo.curselection():
@@ -165,33 +193,48 @@ class PVentas(tk.Tk):
                         self.limpiar_panel(self.frame_dinamyc)
 
 
-    def delete_user(self):
-        with open("db_users.json", "r", encoding='utf-8') as self.file:
-                self.db_users = json.load(self.file)
-                for usuarios in self.db_users["users"]:
-                    if usuarios["id"] == self.tablausuarios.item(self.tablausuarios.selection())["text"]:
-                        self.db_users["users"].remove(usuarios)
-                        with open('db_users.json', 'w') as jf:
-                            json.dump(self.db_users, jf, indent=4, ensure_ascii=True)
-                            messagebox.showinfo('Info',"Usuario eliminado con exito",parent=self)
-                            self.limpiar_panel(self.frame_dinamyc)
-                            break
+    def agregar_carrito(self):
+           
+    # Obtiene las filas seleccionadas
+        selecciones = self.tablausuarios.selection()
+
+    # Verifica si se han seleccionado filas
+        if selecciones:
+        # Itera sobre todas las filas seleccionadas
+            for seleccion in selecciones:
+            # Obtiene los datos de la fila seleccionada
+                id_producto = self.tablausuarios.item(seleccion)["text"]
+                nombre_producto = self.tablausuarios.item(seleccion)["values"][0]
+                precio_producto = self.tablausuarios.item(seleccion)["values"][1]
+                #
+                self.id_produ.append(id_producto)
+                self.nombre_produ.append(nombre_producto)
+                self.precio_produ.append(precio_producto)
+        else:
+            messagebox.showinfo("Error","No se ha seleccionado ningún producto")
+
+    def calcular(self):
+        id1=[]
+        nombres=[]
+        precios=[]
+        for i in range(len(self.id_produ)):
+            self.id_producto = self.id_produ[i]
+            self.nombre_producto = self.nombre_produ[i]
+            precio_producto = self.precio_produ[i]
+            self.total=[]
+            self.total=precio_producto*1
+            id1.append(self.id_producto)
+            nombres.append(self.nombre_producto)
+            precios.append(self.total)
+        messagebox.showinfo("recibo",f"sus id son:{id1}\n sus productos son:{nombres}\n sus precios son:{precios}")
 
 
 
-    def update_user(self):
-        with open("db_users.json", "r", encoding='utf-8') as self.file:
-                self.db_users = json.load(self.file)
-                for usuarios in self.db_users["users"]:
-                    if usuarios["id"] == self.tablausuarios.item(self.tablausuarios.selection())["text"]:
-                        self.ccedula.insert(0, usuarios["id"])
-                        self.ccedula.config(state="disabled")
-                        self.cnombre.insert(0,usuarios["name"])
-                        self.cusuario.insert(0,usuarios["username"])
-                        self.cclave.insert(0,usuarios["password"])
-                        self.ccorreo.insert(0,usuarios["email"])
-                        self.tipo_action = "Actualizar"
 
+                    
+
+
+       
     def limpiar_panel(self,panel):
     # Función para limpiar el contenido del panel
         for widget in panel.winfo_children():
